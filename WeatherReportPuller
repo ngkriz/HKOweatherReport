@@ -1,0 +1,113 @@
+##HKO application:
+#load data from HKO
+#api and json
+ 
+import requests
+hko = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc"
+r = requests.get(hko, verify=False)
+
+respond = r.json()
+print(r)
+
+
+
+
+
+
+# use the forecast
+
+
+
+
+
+# use the forecast
+
+#get the number from strings
+import re
+
+#dataframe
+import pandas as pd
+
+#define a warmday
+def warmday():
+    if Maxtemp > 23:
+        print("It is a warm day, thanks God!")
+    else:
+        print("It is a cool day.")
+        
+
+
+#get the list of elements
+key = pd.DataFrame(respond.keys())
+key.rename(columns={0:'Title'}, inplace=True)
+print(key)
+
+#print the outlook
+print()
+print('Outlook:', respond['generalSituation'])
+
+print()
+
+
+
+form = pd.DataFrame(respond['weatherForecast'])
+
+
+for i in range (9):
+    print('Forecast:', respond['weatherForecast'][i]['forecastDate'],respond['weatherForecast'][i]['week'],'Day',i+1)
+    
+    #wind
+    wind=respond['weatherForecast'][i]['forecastWind']
+    windforceX=[int(s) for s in wind.split() if s.isdigit()]
+    windforce = re.findall("(\d+)", wind)
+    print('Wind:', wind)
+    print('Wind:', windforce)
+    
+    #weather
+    print('Weather:', respond['weatherForecast'][i]['forecastWeather'])
+    
+    #temp
+    Maxtemp=respond['weatherForecast'][i]['forecastMaxtemp']['value']
+    Mintemp=respond['weatherForecast'][i]['forecastMintemp']['value']
+    print ('Max temp and Min temp:',Maxtemp,'C', Mintemp,'C')
+    warmday()
+    print()
+    
+
+form.head()[['forecastDate','week','forecastWind','forecastWeather']]
+
+
+
+
+
+
+
+
+
+
+
+
+
+##HKO current weather:
+#load data from HKO
+#api and json
+ 
+import requests
+hko2 = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc"
+r2 = requests.get(hko2, verify=False)
+
+respond2 = r2.json()
+
+print(r2)
+print()
+key2 = pd.DataFrame(respond2.keys())
+key2.rename(columns={0:'Title'}, inplace=True)
+print(key2)
+
+
+##change the title below:
+report2 = pd.DataFrame(respond2['humidity']['data'])
+
+
+report2
+
